@@ -1,0 +1,11 @@
+{
+  "name": "solo",
+  "version": "1.0.0",
+  "description": "Evernote idea-mapping tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Greg Panciera",
+  "license": "ISC"
+}
