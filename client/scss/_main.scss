@@ -1,0 +1,43 @@
+*{
+  margin: 0;
+  padding: 0;
+}   
+
+body {
+  // background-image: url("../images/temp-bkground.png");
+  background-image: url("../images/temp-bkground.png");
+  background-size: cover;
+  height: 100vh;
+  background-color: #303030;
+  // // padding-top: 20px;
+  // padding-left: 20px;
+  
+}
+
+.noteCard {
+  width: 18em;
+  // height: 8em;
+  // background: radial-gradient(
+  //   rgba(210, 210, 210, 1),
+  //   rgba(200, 200, 200, 1)
+  //   );
+  background-color: rgba(210, 210, 210, 1);
+  border-radius: 0.4em;
+  padding: 1.9em;
+  margin: 1.2em;
+  font-family: 'Montserrat', sans-serif;
+  // color: $lightGrey;
+  opacity: 98%;
+  font-size: 1.1em;
+  // font-family: 'Raleway', sans-serif;
+  // font-family: 'Inconsolata', monospace;
+  
+}
+
+.noteDetailsList {
+  list-style-type: none;
+}
+
+.noteDetail {
+
+}
