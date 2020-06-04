@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
 const apiRouter = require('./routes/api');
+// const session = require('express-session');
 const PORT = 3000;
 
 

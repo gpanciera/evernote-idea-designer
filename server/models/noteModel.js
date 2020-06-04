@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+// require('dotenv').config(); // moved this into server.js
 
-// const MONGO_URI = 'mongodb+srv://gpanciera:N64rpauDW6IO4j7N@cluster0-xesgv.mongodb.net/test?retryWrites=true&w=majority';
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-xesgv.mongodb.net/test?retryWrites=true&w=majority`;
 
 // TO RESEARCH FURTHER - best way to handle connection error. Postman currently spins if I submit wrong pw

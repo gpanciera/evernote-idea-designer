@@ -17,6 +17,7 @@ class Noteboard extends Component {
       .then( res => res.json())
       .then( notes => {
         if (!Array.isArray(notes)) notes = [];
+
         return this.setState({
           notes,
           gotNotes: true
@@ -27,7 +28,6 @@ class Noteboard extends Component {
   
   clickHandler() {
     console.log("WE'RE IN THE HANDLER!");
-    
   }
 
   render() {
@@ -47,18 +47,23 @@ class Noteboard extends Component {
       
     console.log("Noteboard -> notes ****", notes);
     const noteComps = notes.map((note, i) => {
-      return ( <Note key={i} note={note} clickHandler={ () => this.clickHandler() }  /> );
+      console.log("Noteboard -> render -> note", note);
+      console.log("Noteboard -> render -> note.type", note.type);
+      console.log("Noteboard -> render -> note.note", note.note);
+      let thing = note.note;
+      return ( <Note key={i} note={thing} clickHandler={ () => this.clickHandler() }  /> );
     });
     console.log("Noteboard -> render -> noteComps", noteComps)
 
+    let dickNuts = {"note": {"_text": "This is a test note bro"}};
+    // let dickNuts2 = 'Hello dickNuts2'
+    
     return (
       <section className="mainSection">
-        {/* <header className="pageHeader">
-          <h2>Notes</h2>
-        </header> */}
-        <div className="noteContainer">
+        <div>{dickNuts}</div>
+        {/* <div className="noteContainer">
           { noteComps }
-        </div>
+        </div> */}
       </section>
     );
   }
