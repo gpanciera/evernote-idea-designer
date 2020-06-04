@@ -6,7 +6,6 @@ const apiRouter = require('./routes/api');
 // const session = require('express-session');
 const PORT = 3000;
 
-
 // api route handlers
 app.use('/api', apiRouter);
 

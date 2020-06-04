@@ -6,14 +6,18 @@
 body {
   // background-image: url("../images/temp-bkground.png");
   background-image: url("../images/temp-bkground.png");
-  background-size: cover;
-  height: 100vh;
+  // background-size: cover;
+  height: 110vh;
   background-color: #303030;
   // // padding-top: 20px;
   // padding-left: 20px;
   
 }
 
+button {
+  border: none;
+  background: none;
+}
 .noteCard {
   width: 18em;
   // height: 8em;
@@ -26,18 +30,23 @@ body {
   padding: 1.9em;
   margin: 1.2em;
   font-family: 'Montserrat', sans-serif;
+  // font-family: 'Raleway', sans-serif;
+  // font-family: 'Inconsolata', monospace;
   // color: $lightGrey;
   opacity: 98%;
   font-size: 1.1em;
-  // font-family: 'Raleway', sans-serif;
-  // font-family: 'Inconsolata', monospace;
   
 }
 
+// li {
+//   outline: 1px solid transparent;
+// }
+
 .noteDetailsList {
+  // outline: 1px solid transparent;
   list-style-type: none;
 }
 
-.noteDetail {
+// .noteDetail {
 
-}
+// }

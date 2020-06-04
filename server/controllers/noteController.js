@@ -1,76 +1,98 @@
 var Evernote = require('evernote');
 var convert = require('xml-js');
 
-// const Note = require('../models/noteModel.js');
+const Note = require('../models/noteModel.js');
 
 const noteController = {}
 
 noteController.getNotes = (req, res, next) => {
-
-  // console.log("in get notes")
-  // console.log("noteController.getNotes -> process.env.EN_DEV_TOKEN", process.env.EN_DEV_TOKEN)
-  const client = new Evernote.Client({ 
-      token: process.env.EN_DEV_TOKEN, sandbox: true, china: false 
-  });
-  
-  // Set up the NoteStore client 
-  const noteStore = client.getNoteStore();
- 
-  // words: "",
-  // Make API calls 
-  let filter = new Evernote.NoteStore.NoteFilter({
-    notebookGuid: "f468f23d-8214-4475-8d05-4491bdaa3f07",
-    ascending: false,
-  });
-
-  let spec = new Evernote.NoteStore.NotesMetadataResultSpec({
-    includeTitle: true,
-    includeContentLength: true,
-    includeCreated: true,
-    includeUpdated: true,
-    includeDeleted: true,
-    includeUpdateSequenceNum: true,
-    includeNotebookGuid: true,
-    includeTagGuids: true,
-    includeAttributes: true,
-    includeLargestResourceMime: true,
-    includeLargestResourceSize: true,
-  });
-  
-  let noteToSend = {
-    evernoteID: 0,
-    summary: '',
-    type: 'journal',
-    note: '',
-    related: [],
-  }
-
-  completeNotesList = [];
-
-  noteStore.findNotesMetadata(filter, 0, 500, spec)
-    .then( data => {
-      let promArr = data.notes.map( note => {
-        return (noteStore.getNoteContent(note.guid)
-          .then( rawNoteXMLContent => {
-            jsObjNote = convert.xml2js(rawNoteXMLContent, {compact: true});
-            console.log("noteController.getNotes -> jsObjNote", jsObjNote);
-            return Object.assign({}, noteToSend, { evernoteID: note.guid, note: jsObjNote['en-note'].div});
-          })
-          .catch(err => console.log("ERROR GETTING NOTE CONTENT FROM EVERNOTE"))
-        )
-      })
-      Promise.all(promArr)
-        .then( data => {
-          console.log("****** completeNotesList AFTER LOOP ******", data);
-          res.locals.notes = data;
-          return next();
-        })
-        .catch((err, req, res, next) => {
-          return next(err)
-        })  
+  Note.find({}).exec()
+  .then(notes => {
+    res.locals.notes = notes;
+    console.log("************** res.locals.notes **************", res.locals.notes);
+    return next();
+  })
+  .catch((err, req, res, next) => {
+    return next({
+      log: `Error in noteController.getNotes : ${err}`, 
+      message: {err: 'Error getting notes from database'},
     })
-    .catch(err => console.log("ERROR COLLECTING NOTES FROM EVERNOTE"))
+  })
 }
+
+
+
+module.exports = noteController;
+
+
+
+
+// noteController.getNotes = (req, res, next) => {
+
+//   // console.log("in get notes")
+//   // console.log("noteController.getNotes -> process.env.EN_DEV_TOKEN", process.env.EN_DEV_TOKEN)
+//   const client = new Evernote.Client({ 
+//       token: process.env.EN_DEV_TOKEN, sandbox: true, china: false 
+//   });
+  
+//   // Set up the NoteStore client 
+//   const noteStore = client.getNoteStore();
+ 
+//   // words: "",
+//   // Make API calls 
+//   let filter = new Evernote.NoteStore.NoteFilter({
+//     notebookGuid: "f468f23d-8214-4475-8d05-4491bdaa3f07",
+//     ascending: false,
+//   });
+
+//   let spec = new Evernote.NoteStore.NotesMetadataResultSpec({
+//     includeTitle: true,
+//     includeContentLength: true,
+//     includeCreated: true,
+//     includeUpdated: true,
+//     includeDeleted: true,
+//     includeUpdateSequenceNum: true,
+//     includeNotebookGuid: true,
+//     includeTagGuids: true,
+//     includeAttributes: true,
+//     includeLargestResourceMime: true,
+//     includeLargestResourceSize: true,
+//   });
+  
+//   let noteToSend = {
+//     evernoteID: 0,
+//     summary: '',
+//     type: 'journal',
+//     note: '',
+//     related: [],
+//   }
+
+//   completeNotesList = [];
+
+//   noteStore.findNotesMetadata(filter, 0, 500, spec)
+//     .then( data => {
+//       let promArr = data.notes.map( note => {
+//         return (noteStore.getNoteContent(note.guid)
+//           .then( rawNoteXMLContent => {
+//             jsObjNote = convert.xml2js(rawNoteXMLContent, {compact: true});
+//             console.log("noteController.getNotes -> jsObjNote", jsObjNote);
+//             return Object.assign({}, noteToSend, { evernoteID: note.guid, note: jsObjNote['en-note'].div});
+//           })
+//           .catch(err => console.log("ERROR GETTING NOTE CONTENT FROM EVERNOTE"))
+//         )
+//       })
+//       Promise.all(promArr)
+//         .then( data => {
+//           console.log("****** completeNotesList AFTER LOOP ******", data);
+//           res.locals.notes = data;
+//           return next();
+//         })
+//         .catch((err, req, res, next) => {
+//           return next(err)
+//         })  
+//     })
+//     .catch(err => console.log("ERROR COLLECTING NOTES FROM EVERNOTE"))
+// }
 
 
 // noteStore.listNotebooks()
@@ -89,24 +111,6 @@ noteController.getNotes = (req, res, next) => {
 //     message: {err: 'Error getting notes from database'},
 //   })
 // })  
-
-
-// noteController.getNotes = (req, res, next) => {
-//   Note.find({}).exec()
-//   .then(notes => {
-//     res.locals.notes = notes;
-//     console.log("************** res.locals.notes **************", res.locals.notes);
-//     return next();
-//   })
-//   .catch((err, req, res, next) => {
-//     return next({
-//       log: `Error in noteController.getNotes : ${err}`, 
-//       message: {err: 'Error getting notes from database'},
-//     })
-//   })
-// }
-
-module.exports = noteController;
 
 
 /*

@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
 	mode: process.env.NODE_ENV,
+	// target: 'node',
 	entry: './client/index.js',
 	output: {
 		path: path.resolve(__dirname, 'build'),

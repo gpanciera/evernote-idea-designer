@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// require('dotenv').config(); // moved this into server.js
+require('dotenv').config(); // moved this into server.js
 
 const MONGO_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-xesgv.mongodb.net/test?retryWrites=true&w=majority`;
 

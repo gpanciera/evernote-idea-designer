@@ -1,15 +1,44 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import ReactModal from 'react-modal';
 import Note from './Note.jsx';
+import Draggable from 'react-draggable';
+// import { useSpring, animated } from 'react-spring'
+// import { useDrag } from 'react-use-gesture'
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
+// http://reactcommunity.org/react-modal/accessibility/
+ReactModal.setAppElement('#root');
 
 class Noteboard extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       gotNotes: false,
       notes: [],
+      showModal: false,
     }
-    this.clickHandler = this.clickHandler.bind(this);
+    // this.clickHandler = this.clickHandler.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+  
+  handleOpenModal (e) {
+    if(e.type === "mouseup") {console.log("in mouseup"); this.setState({ showModal: true });}
+  }
+  
+  handleCloseModal () {
+    this.setState({ showModal: false });
   }
 
   componentDidMount() {
@@ -23,12 +52,7 @@ class Noteboard extends Component {
           gotNotes: true
         });
       })
-      .catch(err => console.log('Noteboard.componentDidMount-error fetching notes: ', err));
     }
-  
-  clickHandler() {
-    console.log("WE'RE IN THE HANDLER!");
-  }
 
   render() {
     if (!this.state.gotNotes) return (
@@ -45,25 +69,30 @@ class Noteboard extends Component {
       <div>Sorry, no notes found</div>
       );
       
-    console.log("Noteboard -> notes ****", notes);
     const noteComps = notes.map((note, i) => {
-      console.log("Noteboard -> render -> note", note);
-      console.log("Noteboard -> render -> note.type", note.type);
-      console.log("Noteboard -> render -> note.note", note.note);
-      let thing = note.note;
-      return ( <Note key={i} note={thing} clickHandler={ () => this.clickHandler() }  /> );
+      return ( 
+        <div>
+          <button onClick={this.handleOpenModal}>
+            <Draggable className="draggable">
+              <div>
+                <Note key={i} note={note}/> 
+              </div>
+            </Draggable>
+          </button>
+          <ReactModal isOpen={this.state.showModal} contentLabel="Test Label">
+            <button onClick={this.handleCloseModal}>Close Modal</button>
+          </ReactModal>
+        </div>
+      );
     });
-    console.log("Noteboard -> render -> noteComps", noteComps)
 
-    let dickNuts = {"note": {"_text": "This is a test note bro"}};
-    // let dickNuts2 = 'Hello dickNuts2'
+    // clickHandler={ () => this.clickHandler() } 
     
     return (
       <section className="mainSection">
-        <div>{dickNuts}</div>
-        {/* <div className="noteContainer">
+        <div className="noteContainer">
           { noteComps }
-        </div> */}
+        </div>
       </section>
     );
   }
