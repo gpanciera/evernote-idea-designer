@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import Note from './Note.jsx';
 import Draggable from 'react-draggable';
-// import { useSpring, animated } from 'react-spring'
-// import { useDrag } from 'react-use-gesture'
+import { useSpring, animated } from 'react-spring'
+import { useDrag } from 'react-use-gesture'
 
 const customStyles = {
   content : {
