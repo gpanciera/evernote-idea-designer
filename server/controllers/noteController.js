@@ -6,7 +6,7 @@ const Note = require('../models/noteModel.js');
 const noteController = {}
 
 noteController.getNotes = (req, res, next) => {
-  Note.find({}).exec()
+  Note.find({}).sort({summary: 'desc'}).exec()
   .then(notes => {
     res.locals.notes = notes;
     console.log("************** res.locals.notes **************", res.locals.notes);

@@ -23,6 +23,7 @@
     "react-modal": "^3.11.2",
     "react-spring": "^9.0.0-rc.3",
     "react-use-gesture": "^7.0.15",
+    "react-with-gesture": "^4.0.8",
     "webpack": "^4.43.0",
     "xml-js": "^1.6.11"
   },

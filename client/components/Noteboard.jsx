@@ -2,20 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactModal from 'react-modal';
 import Note from './Note.jsx';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 // import { useSpring, animated } from 'react-spring'
-// import { useDrag } from 'react-use-gesture'
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+// import { useGesture, withGesture, Gesture } from 'react-with-gesture'
 
 // http://reactcommunity.org/react-modal/accessibility/
 ReactModal.setAppElement('#root');
@@ -27,14 +16,38 @@ class Noteboard extends Component {
       gotNotes: false,
       notes: [],
       showModal: false,
+      isDragging: false,
+      modalIndexToView: 0,
     }
     // this.clickHandler = this.clickHandler.bind(this);
-    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    // this.onDrag = this.onDrag.bind(this);
+    // this.onDragStop = this.onDragStop.bind(this);
+    this.escFunction = this.escFunction.bind(this);
   }
-  
-  handleOpenModal (e) {
-    if(e.type === "mouseup") {console.log("in mouseup"); this.setState({ showModal: true });}
+  escFunction(e) {
+    if(e.keyCode === 27) {
+      this.setState({ showModal: false });
+    }
+  }
+
+  // onDrag(e) {
+  //   this.setState({...this.state, isDragging: true})
+  //   console.log("Noteboard -> onDrag -> this.state", this.state)
+  // }
+
+  // onDragStop (e) {
+  //   // HACK: add some delay otherwise a click event is sent
+  //   console.log("onDragStop called")
+  //   // setTimeout((obj) => { obj.isDragging = false }, 200, this)
+  //   this.setState({...this.state, isDragging: false})
+  // }
+
+  handleClick (i) {
+    console.log("Noteboard -> handleClick -> i", i)
+    // if(!this.state.isDragging) 
+    this.setState({ showModal: true, modalIndexToView: i });
   }
   
   handleCloseModal () {
@@ -42,6 +55,8 @@ class Noteboard extends Component {
   }
 
   componentDidMount() {
+    document.addEventListener("keydown", this.escFunction, false);
+    
     fetch('/api/')
       .then( res => res.json())
       .then( notes => {
@@ -51,8 +66,13 @@ class Noteboard extends Component {
           notes,
           gotNotes: true
         });
-      })
-    }
+     });
+  
+  }
+
+  componentWillUnmount(){
+    document.removeEventListener("keydown", this.escFunction, false);
+  }
 
   render() {
     if (!this.state.gotNotes) return (
@@ -66,34 +86,26 @@ class Noteboard extends Component {
     if (!notes) return null;
     
     if (!notes.length) return (
-      <div>Sorry, no notes found</div>
+      <div>No notes found</div>
       );
       
-    const noteComps = notes.map((note, i) => {
+    const allNotes = notes.map((note, i) => {
       return ( 
-        <div>
-          <button onClick={this.handleOpenModal}>
-            <Draggable className="draggable">
-              <div>
-                <Note key={i} note={note}/> 
-              </div>
-            </Draggable>
-          </button>
-          <ReactModal isOpen={this.state.showModal} contentLabel="Test Label">
-            <button onClick={this.handleCloseModal}>Close Modal</button>
-          </ReactModal>
-        </div>
+            <Note key={i} note={note} onClick={() => this.handleClick(i)}/> 
       );
     });
-
-    // clickHandler={ () => this.clickHandler() } 
     
     return (
-      <section className="mainSection">
-        <div className="noteContainer">
-          { noteComps }
-        </div>
-      </section>
+      <div className="mainSection">
+        <div className="noteContainer">{ allNotes }</div>
+        <ReactModal isOpen={this.state.showModal} 
+                    className="modal"
+                    overlayClassName="modal-overlay"
+                    contentLabel="Test Label" 
+                    parentSelector={() => document.querySelector('#root')}>
+          {this.state.notes[this.state.modalIndexToView].note}
+        </ReactModal>
+      </div>
     );
   }
 }
