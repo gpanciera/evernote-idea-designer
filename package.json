@@ -23,14 +23,14 @@
     "react-modal": "^3.11.2",
     "react-spring": "^9.0.0-rc.3",
     "react-use-gesture": "^7.0.16",
-    "webpack": "^4.44.1",
+    "webpack": "^5.75.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.3.0",
@@ -40,7 +40,7 @@
     "nodemon": "^2.0.4",
     "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
-    "webpack-cli": "^3.3.12",
+    "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^3.11.0"
   }
 }
